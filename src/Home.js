@@ -1,9 +1,14 @@
 import React, { useCallback, useContext, useState } from "react";
 import {
-  Container,
   Box,
-  Typography,
   Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography,
   Paper,
   Table,
   TableBody,
@@ -19,6 +24,7 @@ import SearchCriteria from "./components/SearchCriteria";
 const Home = () => {
   const [context, setContext] = useContext(ReservationContext);
   const [filteredData, setFilteredData] = useState(context);
+  const [showDel, setShowDel] = useState(false);
 
   const onSearchSubmit = useCallback(
     (filters) => {
@@ -35,6 +41,19 @@ const Home = () => {
     },
     [context, setFilteredData]
   );
+
+  const onDeleteClick = useCallback(() => {
+    setShowDel(true);
+  }, [setShowDel]);
+
+  const onDelDialogClose = useCallback(() => {
+    setShowDel(false);
+  }, [setShowDel]);
+
+  const onDelete = useCallback(() => {
+    console.log("confirm delete");
+    setShowDel(false);
+  }, [setShowDel]);
 
   return (
     <Container maxWidth="lg">
@@ -100,7 +119,11 @@ const Home = () => {
                   <TableCell align="center">{email}</TableCell>
                   <TableCell align="center">{phone}</TableCell>
                   <TableCell align="center">
-                    <Button variant="contained" size="small">
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={onDeleteClick}
+                    >
                       Delete
                     </Button>
                   </TableCell>
@@ -110,6 +133,25 @@ const Home = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Dialog
+        open={showDel}
+        // TransitionComponent={Transition}
+        keepMounted
+        onClose={onDelDialogClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Confirm delete?"}</DialogTitle>
+        {/* <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent> */}
+        <DialogActions>
+          <Button onClick={onDelDialogClose}>Cancel</Button>
+          <Button onClick={onDelete}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
