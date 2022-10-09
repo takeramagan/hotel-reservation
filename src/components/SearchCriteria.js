@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { useFormik } from "formik";
+import TextField from "./TextField";
 
 const SearchCriteria = ({ onSearchSubmit }) => {
   const formik = useFormik({
@@ -34,8 +35,6 @@ const SearchCriteria = ({ onSearchSubmit }) => {
             id="firstName"
             label="First name"
             type="text"
-            size="small"
-            sx={{ m: 1 }}
             value={formik.values.firstName}
             onChange={formik.handleChange}
           />
@@ -43,8 +42,6 @@ const SearchCriteria = ({ onSearchSubmit }) => {
             id="lastName"
             label="Last name"
             type="text"
-            size="small"
-            sx={{ m: 1 }}
             value={formik.values.lastName}
             onChange={formik.handleChange}
           />
@@ -52,8 +49,6 @@ const SearchCriteria = ({ onSearchSubmit }) => {
             id="email"
             label="Email"
             type="email"
-            size="small"
-            sx={{ m: 1 }}
             value={formik.values.email}
             onChange={formik.handleChange}
           />
@@ -61,35 +56,22 @@ const SearchCriteria = ({ onSearchSubmit }) => {
             id="phone"
             label="Phone"
             type="tel"
-            size="small"
-            sx={{ m: 1 }}
             value={formik.values.phone}
             onChange={formik.handleChange}
           />
         </Box>
-        <Box
-          sx={{
-            mt: 2,
-            mx: 1,
-            display: "flex",
-            alignItems: "flex-end",
-          }}
-        >
-          <Typography variant="h8">Arrival date : </Typography>
+        <Box sx={{ my: 2 }}>
           <TextField
             id="arrivalDate"
+            label="Arrival date"
             type="date"
-            size="small"
-            sx={{ mx: 1 }}
             value={formik.values.arrivalDate}
             onChange={formik.handleChange}
           />
-          <Typography variant="h8">Departure date : </Typography>
           <TextField
             id="departureDate"
+            label="Departure date"
             type="date"
-            size="small"
-            sx={{ mx: 1 }}
             value={formik.values.departureDate}
             onChange={formik.handleChange}
           />

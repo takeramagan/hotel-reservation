@@ -17,8 +17,8 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import ReservationContext from "./ReservationContext";
-import SearchCriteria from "./components/SearchCriteria";
 import ReservationDetail from "./components/ReservationDetail";
+import SearchCriteria from "./components/SearchCriteria";
 
 const Home = () => {
   const [context, setContext] = useContext(ReservationContext); // data list
