@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { Box, Button, Form, Paper, TextField, Typography } from "@mui/material";
+import React, { useCallback } from "react";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 
 const SearchCriteria = ({ onSearchSubmit }) => {

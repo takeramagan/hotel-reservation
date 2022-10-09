@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import {
   Container,
   Box,
@@ -20,6 +20,22 @@ const Home = () => {
   const [context, setContext] = useContext(ReservationContext);
   const [filteredData, setFilteredData] = useState(context);
 
+  const onSearchSubmit = useCallback(
+    (filters) => {
+      const resultData = context.filter(
+        (v) =>
+          v.firstName.toLowerCase().includes(filters.firstName.toLowerCase()) &&
+          v.lastName.toLowerCase().includes(filters.lastName.toLowerCase()) &&
+          v.email.toLowerCase().includes(filters.email.toLowerCase()) &&
+          v.phone.includes(filters.phone.toLowerCase()) &&
+          v.stay.arrivalDate.includes(filters.arrivalDate) &&
+          v.stay.departureDate.includes(filters.departureDate)
+      );
+      setFilteredData(resultData);
+    },
+    [context, setFilteredData]
+  );
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -38,7 +54,7 @@ const Home = () => {
           Add new
         </Button>
       </Box>
-      <SearchCriteria />
+      <SearchCriteria onSearchSubmit={onSearchSubmit} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 1080 }}>
           <TableHead>
