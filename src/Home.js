@@ -5,8 +5,6 @@ import {
   Container,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogContentText,
   DialogTitle,
   Typography,
   Paper,
@@ -20,11 +18,13 @@ import {
 import moment from "moment";
 import ReservationContext from "./ReservationContext";
 import SearchCriteria from "./components/SearchCriteria";
+import ReservationDetail from "./components/ReservationDetail";
 
 const Home = () => {
-  const [context, setContext] = useContext(ReservationContext);
-  const [filteredData, setFilteredData] = useState(context);
-  const [showDel, setShowDel] = useState(false);
+  const [context, setContext] = useContext(ReservationContext); // data list
+  const [filteredData, setFilteredData] = useState(context); // searched data
+  const [showDel, setShowDel] = useState(false); //show Alert dialog when delete clicked
+  const [curReservation, setCurReservation] = useState(null); //null: close Modal, {}: empty object, Add new reservation, {email:...} : not empty object, edit reservation
 
   const onSearchSubmit = useCallback(
     (filters) => {
@@ -50,10 +50,29 @@ const Home = () => {
     setShowDel(false);
   }, [setShowDel]);
 
-  const onDelete = useCallback(() => {
+  //Delete reservation
+  const onDeleteItem = useCallback(() => {
     console.log("confirm delete");
     setShowDel(false);
   }, [setShowDel]);
+
+  //Add new reservation
+  const onAddNew = useCallback(() => {
+    setCurReservation({});
+  }, [setCurReservation]);
+
+  //Edit reservation
+  const onEdit = useCallback(
+    (v) => {
+      setCurReservation(v);
+    },
+    [setCurReservation]
+  );
+
+  //close reservation detail modal
+  const onCloseModal = useCallback(() => {
+    setCurReservation(null);
+  }, [setCurReservation]);
 
   return (
     <Container maxWidth="lg">
@@ -69,7 +88,11 @@ const Home = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Hotel reservation system
         </Typography>
-        <Button variant="contained" sx={{ alignSelf: "flex-end" }}>
+        <Button
+          variant="contained"
+          sx={{ alignSelf: "flex-end" }}
+          onClick={onAddNew}
+        >
           Add new
         </Button>
       </Box>
@@ -106,7 +129,12 @@ const Home = () => {
                 stay: { arrivalDate, departureDate },
               } = row;
               return (
-                <TableRow key={`${firstName}-${lastName}`}>
+                <TableRow
+                  key={`${firstName}-${lastName}`}
+                  onDoubleClick={() => {
+                    onEdit(row);
+                  }}
+                >
                   <TableCell align="center">{firstName}</TableCell>
                   <TableCell align="center">{lastName}</TableCell>
                   <TableCell align="center">{`${roomSize} ${roomQuantity}`}</TableCell>
@@ -138,20 +166,14 @@ const Home = () => {
         // TransitionComponent={Transition}
         keepMounted
         onClose={onDelDialogClose}
-        aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{"Confirm delete?"}</DialogTitle>
-        {/* <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent> */}
         <DialogActions>
           <Button onClick={onDelDialogClose}>Cancel</Button>
-          <Button onClick={onDelete}>Confirm</Button>
+          <Button onClick={onDeleteItem}>Confirm</Button>
         </DialogActions>
       </Dialog>
+      <ReservationDetail onClose={onCloseModal} reservation={curReservation} />
     </Container>
   );
 };
