@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Box, Form, Paper, TextField, Typography } from "@mui/material";
+import React, { useCallback, useState } from "react";
+import { Box, Button, Form, Paper, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 
-const SearchCriteria = () => {
-  const [filter, setFilter] = useState({});
+const SearchCriteria = ({ onSearchSubmit }) => {
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -13,12 +12,23 @@ const SearchCriteria = () => {
       arrivalDate: "",
       departureDate: "",
     },
+    onSubmit: (values) => {
+      onSearchSubmit(values);
+    },
   });
+
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      formik.handleSubmit(e);
+    },
+    [formik]
+  );
 
   return (
     <Paper sx={{ my: 4, p: 2 }}>
       <Box sx={{ marginBottom: 2 }}>Search criteria</Box>
-      <form>
+      <form onSubmit={onSubmit}>
         <Box>
           <TextField
             id="firstName"
@@ -84,6 +94,9 @@ const SearchCriteria = () => {
             onChange={formik.handleChange}
           />
         </Box>
+        <Button variant="contained" type="submit" sx={{ mt: 2, ml: 1 }}>
+          Submit
+        </Button>
       </form>
     </Paper>
   );
