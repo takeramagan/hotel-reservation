@@ -2,11 +2,9 @@ import React, { useCallback, useContext } from "react";
 import { Box, Button, Paper } from "@mui/material";
 import { useFormik } from "formik";
 import InputField from "./InputField";
-import { FilterContext } from "../context/Context";
 import { filterInitData } from "../constants/constants";
 
-const SearchCriteria = () => {
-  const [filter, setFilter] = useContext(FilterContext);
+const SearchCriteria = ({ setFilter }) => {
   const formik = useFormik({
     initialValues: filterInitData,
     onSubmit: (values) => {

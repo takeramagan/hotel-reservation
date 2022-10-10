@@ -64,7 +64,7 @@ const Home = () => {
           Add new
         </Button>
       </Box>
-      <SearchCriteria />
+      <SearchCriteria setFilter={setFilter} />
       <ReservationTable filteredData={filteredData} onEdit={onEdit} />
       {!!curReservation && (
         <ReservationDetail
