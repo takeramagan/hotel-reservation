@@ -1,5 +1,4 @@
 import * as yup from "yup";
-import moment from "moment";
 
 const roomOptions = [
   { value: "business-suite", label: "Business Suite" },
@@ -47,13 +46,7 @@ const validationSchema = yup.object({
     .required("Email is required"),
   stay: yup.object({
     arrivalDate: yup.string().required("Required"),
-    departureDate: yup
-      .string()
-      .required("Required")
-      .test("larger", "Departure >= arrival", function match(v) {
-        const ref = yup.ref("arrivalDate");
-        return moment(v) >= moment(ref);
-      }),
+    departureDate: yup.string().required("Required"),
   }),
   room: yup.object({
     roomSize: yup.string().required("Required"),

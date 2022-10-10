@@ -34,7 +34,6 @@ const reservationStore = {
     state = { ...state, data: newData };
     subject.next(state.data);
   },
-  initialState,
 };
 
 export default reservationStore;
