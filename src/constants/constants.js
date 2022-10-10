@@ -77,7 +77,7 @@ const validationSchema = yup.object({
 });
 
 const initialFormValues = {
-  room: { roomSize: "business-suite" },
+  room: { roomSize: "business-suite", roomQuantity: 1 },
   extras: [],
   tags: [],
   stay: {

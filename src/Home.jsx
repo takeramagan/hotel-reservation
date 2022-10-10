@@ -3,9 +3,6 @@ import {
   Box,
   Button,
   Container,
-  Dialog,
-  DialogActions,
-  DialogTitle,
   Typography,
   Paper,
   Table,
@@ -32,7 +29,6 @@ const Home = () => {
   const [reservationData, setReservationData] = useContext(ReservationContext); // data list
   const [filter, setFilter] = useContext(FilterContext); // data list
   const [filteredData, setFilteredData] = useState(reservationData); // searched data
-  const [showDel, setShowDel] = useState(false); //show Alert dialog when delete clicked
   const [curReservation, setCurReservation] = useState(null); //null: close Modal, {}: empty object, Add new reservation, {email:...} : not empty object, edit reservation
 
   // const onSearchSubmit = useCallback(
@@ -47,20 +43,6 @@ const Home = () => {
     const newDisplyData = reservationData.filter((v) => filterData(v, filter));
     setFilteredData(newDisplyData);
   }, [reservationData, filter, setFilteredData]);
-
-  const onDeleteClick = useCallback(() => {
-    setShowDel(true);
-  }, [setShowDel]);
-
-  const onDelDialogClose = useCallback(() => {
-    setShowDel(false);
-  }, [setShowDel]);
-
-  //Delete reservation
-  const onDeleteItem = useCallback(() => {
-    console.log("confirm delete");
-    setShowDel(false);
-  }, [setShowDel]);
 
   //Add new reservation
   const onAddNew = useCallback(() => {
@@ -110,11 +92,11 @@ const Home = () => {
               <TableCell align="center">First Name</TableCell>
               <TableCell align="center">Last Name</TableCell>
               <TableCell align="center">Room</TableCell>
+              <TableCell align="center">Quantity</TableCell>
               <TableCell align="center">Arrival</TableCell>
               <TableCell align="center">Departure</TableCell>
               <TableCell align="center">Email</TableCell>
               <TableCell align="center">Phone</TableCell>
-              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -145,7 +127,8 @@ const Home = () => {
                   >
                     <TableCell align="center">{firstName}</TableCell>
                     <TableCell align="center">{lastName}</TableCell>
-                    <TableCell align="center">{`${roomSize} ${roomQuantity}`}</TableCell>
+                    <TableCell align="center">{roomSize}</TableCell>
+                    <TableCell align="center">{roomQuantity}</TableCell>
                     <TableCell align="center">
                       {moment(arrivalDate).format("YYYY-MM-DD HH:MM")}
                     </TableCell>
@@ -154,33 +137,12 @@ const Home = () => {
                     </TableCell>
                     <TableCell align="center">{email}</TableCell>
                     <TableCell align="center">{phone}</TableCell>
-                    <TableCell align="center">
-                      <Button
-                        variant="contained"
-                        size="small"
-                        onClick={onDeleteClick}
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
                   </TableRow>
                 );
               })}
           </TableBody>
         </Table>
       </TableContainer>
-      <Dialog
-        open={showDel}
-        // TransitionComponent={Transition}
-        keepMounted
-        onClose={onDelDialogClose}
-      >
-        <DialogTitle>{"Confirm delete?"}</DialogTitle>
-        <DialogActions>
-          <Button onClick={onDelDialogClose}>Cancel</Button>
-          <Button onClick={onDeleteItem}>Confirm</Button>
-        </DialogActions>
-      </Dialog>
       {!!curReservation && (
         <ReservationDetail
           onClose={onCloseModal}

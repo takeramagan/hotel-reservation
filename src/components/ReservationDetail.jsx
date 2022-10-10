@@ -1,8 +1,11 @@
-import React, { useContext } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Box,
   Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   FormControl,
   FormControlLabel,
   Modal,
@@ -24,7 +27,6 @@ import {
 } from "../constants/constants";
 import { useFormik } from "formik";
 import moment from "moment";
-import { ReservationContext } from "../context/Context";
 import reservationStore from "../store/reservationStore";
 
 const PaymentRadio = <Radio sx={{ "&.Mui-checked": { color: pink[400] } }} />;
@@ -46,8 +48,9 @@ const switchContainerStyle = {
 };
 
 const ReservationDetail = ({ onClose, reservation }) => {
-  const isEditing = !!reservation?.key; //normally use key property
-  // const [reservations, setReservations] = useContext(ReservationContext);
+  const isEditing = !!reservation?.key;
+  const [showDel, setShowDel] = useState(false); //show Alert dialog when delete clicked
+
   const formik = useFormik({
     initialValues: isEditing
       ? {
@@ -70,6 +73,22 @@ const ReservationDetail = ({ onClose, reservation }) => {
       onClose();
     },
   });
+
+  const onDeleteClick = useCallback(() => {
+    setShowDel(true);
+  }, [setShowDel]);
+
+  const onDelDialogClose = useCallback(() => {
+    setShowDel(false);
+  }, [setShowDel]);
+
+  //Delete reservation
+  const onConfirmDelete = useCallback(() => {
+    console.log("confirm delete");
+    reservationStore.delete(reservation);
+    setShowDel(false);
+    onClose();
+  }, [setShowDel, reservation, onClose]);
 
   return (
     <Modal open={!!reservation} onClose={onClose} sx={{ overflow: "scroll" }}>
@@ -377,7 +396,11 @@ const ReservationDetail = ({ onClose, reservation }) => {
             >
               <Box>
                 {isEditing && (
-                  <Button variant="contained" color="error">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={onDeleteClick}
+                  >
                     Delete
                   </Button>
                 )}
@@ -393,6 +416,18 @@ const ReservationDetail = ({ onClose, reservation }) => {
             </Box>
           </form>
         </Paper>
+        <Dialog
+          open={showDel}
+          // TransitionComponent={Transition}
+          keepMounted
+          onClose={onDelDialogClose}
+        >
+          <DialogTitle>{"Confirm delete?"}</DialogTitle>
+          <DialogActions>
+            <Button onClick={onDelDialogClose}>Cancel</Button>
+            <Button onClick={onConfirmDelete}>Confirm</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Modal>
   );
