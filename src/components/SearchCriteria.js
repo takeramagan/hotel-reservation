@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { useFormik } from "formik";
-import TextField from "./TextField";
+import InputField from "./InputField";
 
 const SearchCriteria = ({ onSearchSubmit }) => {
   const formik = useFormik({
@@ -31,28 +31,28 @@ const SearchCriteria = ({ onSearchSubmit }) => {
       <Box sx={{ marginBottom: 2 }}>Search criteria</Box>
       <form onSubmit={onSubmit}>
         <Box>
-          <TextField
+          <InputField
             id="firstName"
             label="First name"
             type="text"
             value={formik.values.firstName}
             onChange={formik.handleChange}
           />
-          <TextField
+          <InputField
             id="lastName"
             label="Last name"
             type="text"
             value={formik.values.lastName}
             onChange={formik.handleChange}
           />
-          <TextField
+          <InputField
             id="email"
             label="Email"
             type="email"
             value={formik.values.email}
             onChange={formik.handleChange}
           />
-          <TextField
+          <InputField
             id="phone"
             label="Phone"
             type="tel"
@@ -61,14 +61,14 @@ const SearchCriteria = ({ onSearchSubmit }) => {
           />
         </Box>
         <Box sx={{ my: 2 }}>
-          <TextField
+          <InputField
             id="arrivalDate"
             label="Arrival date"
             type="date"
             value={formik.values.arrivalDate}
             onChange={formik.handleChange}
           />
-          <TextField
+          <InputField
             id="departureDate"
             label="Departure date"
             type="date"

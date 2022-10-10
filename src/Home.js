@@ -173,7 +173,12 @@ const Home = () => {
           <Button onClick={onDeleteItem}>Confirm</Button>
         </DialogActions>
       </Dialog>
-      <ReservationDetail onClose={onCloseModal} reservation={curReservation} />
+      {!!curReservation && (
+        <ReservationDetail
+          onClose={onCloseModal}
+          reservation={curReservation}
+        />
+      )}
     </Container>
   );
 };
