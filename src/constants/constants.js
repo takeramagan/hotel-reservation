@@ -13,13 +13,6 @@ const extraService = [
   { value: "extraBalcony", label: "Balcony" },
 ];
 
-// const tagOptions = [
-//   { value: "hotel", label: "hotel" },
-//   { value: "booking", label: "booking" },
-//   { value: "labtest", label: "labtest" },
-//   { value: "angular", label: "angular" },
-//   { value: "material", label: "material" },
-// ];
-const tagOptions = ["hotel", "booking", "labtest", , "angular", "material"];
+const tagOptions = ["hotel", "booking", "labtest", "angular", "material"];
 
 export { roomOptions, extraService, tagOptions };

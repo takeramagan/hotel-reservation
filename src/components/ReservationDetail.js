@@ -17,9 +17,8 @@ import { pink } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import InputField from "./InputField";
 import { extraService, roomOptions, tagOptions } from "../constants/constants";
-import { useFormik, yupToFormErrors } from "formik";
-import moment, { now } from "moment";
-import reservationData from "../reservations.json";
+import { useFormik } from "formik";
+import moment from "moment";
 
 const PaymentRadio = <Radio sx={{ "&.Mui-checked": { color: pink[400] } }} />;
 
@@ -106,6 +105,7 @@ const initialValues = {
     state: "",
     city: "",
   },
+  payment: "cc",
   reminder: true,
   newsletter: true,
   confirm: true,
@@ -158,7 +158,7 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.stay?.arrivalDate &&
-                  formik.errors.stay?.arrivalDate
+                  !!formik.errors.stay?.arrivalDate
                 }
                 helperText={
                   formik.touched.stay?.arrivalDate &&
@@ -174,7 +174,7 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.stay?.departureDate &&
-                  formik.errors.stay?.departureDate
+                  !!formik.errors.stay?.departureDate
                 }
                 helperText={
                   formik.touched.stay?.departureDate &&
@@ -204,7 +204,7 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 onBlur={formik.handleBlur}
                 error={
                   formik.touched.room?.roomQuantity &&
-                  formik.errors.room?.roomQuantity
+                  !!formik.errors.room?.roomQuantity
                 }
               />
             </Box>
@@ -267,7 +267,7 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 onChange={formik.handleChange}
                 error={
                   formik.touched.addressStreet?.streetName &&
-                  formik.errors.addressStreet?.streetName
+                  !!formik.errors.addressStreet?.streetName
                 }
                 helperText={
                   formik.touched.addressStreet?.streetName &&
@@ -293,7 +293,7 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 onChange={formik.handleChange}
                 error={
                   formik.touched.addressLocation?.zipCode &&
-                  formik.errors.addressLocation?.zipCode
+                  !!formik.errors.addressLocation?.zipCode
                 }
                 helperText={
                   formik.touched.addressLocation?.zipCode &&
@@ -310,7 +310,7 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 onChange={formik.handleChange}
                 error={
                   formik.touched.addressLocation?.state &&
-                  formik.errors.addressLocation?.state
+                  !!formik.errors.addressLocation?.state
                 }
                 helperText={
                   formik.touched.addressLocation?.state &&
@@ -326,7 +326,7 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 onChange={formik.handleChange}
                 error={
                   formik.touched.addressLocation?.city &&
-                  formik.errors.addressLocation?.city
+                  !!formik.errors.addressLocation?.city
                 }
                 helperText={
                   formik.touched.addressLocation?.city &&
