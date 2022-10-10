@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -16,31 +16,37 @@ import {
   TableHead,
 } from "@mui/material";
 import moment from "moment";
-import ReservationContext from "./ReservationContext";
+import { FilterContext, ReservationContext } from "./context/Context";
 import ReservationDetail from "./components/ReservationDetail";
 import SearchCriteria from "./components/SearchCriteria";
 
+const filterData = (v, filters) =>
+  v.firstName.toLowerCase().includes(filters.firstName.toLowerCase()) &&
+  v.lastName.toLowerCase().includes(filters.lastName.toLowerCase()) &&
+  v.email.toLowerCase().includes(filters.email.toLowerCase()) &&
+  v.phone.includes(filters.phone) &&
+  v.stay.arrivalDate.includes(filters.arrivalDate) &&
+  v.stay.departureDate.includes(filters.departureDate);
+
 const Home = () => {
-  const [context, setContext] = useContext(ReservationContext); // data list
-  const [filteredData, setFilteredData] = useState(context); // searched data
+  const [reservationData, setReservationData] = useContext(ReservationContext); // data list
+  const [filter, setFilter] = useContext(FilterContext); // data list
+  const [filteredData, setFilteredData] = useState(reservationData); // searched data
   const [showDel, setShowDel] = useState(false); //show Alert dialog when delete clicked
   const [curReservation, setCurReservation] = useState(null); //null: close Modal, {}: empty object, Add new reservation, {email:...} : not empty object, edit reservation
 
-  const onSearchSubmit = useCallback(
-    (filters) => {
-      const resultData = context.filter(
-        (v) =>
-          v.firstName.toLowerCase().includes(filters.firstName.toLowerCase()) &&
-          v.lastName.toLowerCase().includes(filters.lastName.toLowerCase()) &&
-          v.email.toLowerCase().includes(filters.email.toLowerCase()) &&
-          v.phone.includes(filters.phone.toLowerCase()) &&
-          v.stay.arrivalDate.includes(filters.arrivalDate) &&
-          v.stay.departureDate.includes(filters.departureDate)
-      );
-      setFilteredData(resultData);
-    },
-    [context, setFilteredData]
-  );
+  // const onSearchSubmit = useCallback(
+  //   (filters) => {
+  //     const resultData = reservationData.filter(filterData);
+  //     setFilteredData(resultData);
+  //   },
+  //   [reservationData, setFilteredData]
+  // );
+
+  useEffect(() => {
+    const newDisplyData = reservationData.filter((v) => filterData(v, filter));
+    setFilteredData(newDisplyData);
+  }, [reservationData, filter, setFilteredData]);
 
   const onDeleteClick = useCallback(() => {
     setShowDel(true);
@@ -96,7 +102,7 @@ const Home = () => {
           Add new
         </Button>
       </Box>
-      <SearchCriteria onSearchSubmit={onSearchSubmit} />
+      <SearchCriteria />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 1080 }}>
           <TableHead>
@@ -119,45 +125,46 @@ const Home = () => {
                 </TableCell>
               </TableRow>
             )}
-            {filteredData.map((row) => {
-              const {
-                firstName,
-                lastName,
-                room: { roomSize, roomQuantity },
-                email,
-                phone,
-                stay: { arrivalDate, departureDate },
-              } = row;
-              return (
-                <TableRow
-                  key={`${firstName}-${lastName}`}
-                  onDoubleClick={() => {
-                    onEdit(row);
-                  }}
-                >
-                  <TableCell align="center">{firstName}</TableCell>
-                  <TableCell align="center">{lastName}</TableCell>
-                  <TableCell align="center">{`${roomSize} ${roomQuantity}`}</TableCell>
-                  <TableCell align="center">
-                    {moment(arrivalDate).format("YYYY-MM-DD HH:MM")}
-                  </TableCell>
-                  <TableCell align="center">
-                    {moment(departureDate).format("YYYY-MM-DD HH:MM")}
-                  </TableCell>
-                  <TableCell align="center">{email}</TableCell>
-                  <TableCell align="center">{phone}</TableCell>
-                  <TableCell align="center">
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={onDeleteClick}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {!!filteredData.length &&
+              filteredData.map((row) => {
+                const {
+                  firstName,
+                  lastName,
+                  room: { roomSize, roomQuantity },
+                  email,
+                  phone,
+                  stay: { arrivalDate, departureDate },
+                } = row;
+                return (
+                  <TableRow
+                    key={`${firstName}-${lastName}`}
+                    onDoubleClick={() => {
+                      onEdit(row);
+                    }}
+                  >
+                    <TableCell align="center">{firstName}</TableCell>
+                    <TableCell align="center">{lastName}</TableCell>
+                    <TableCell align="center">{`${roomSize} ${roomQuantity}`}</TableCell>
+                    <TableCell align="center">
+                      {moment(arrivalDate).format("YYYY-MM-DD HH:MM")}
+                    </TableCell>
+                    <TableCell align="center">
+                      {moment(departureDate).format("YYYY-MM-DD HH:MM")}
+                    </TableCell>
+                    <TableCell align="center">{email}</TableCell>
+                    <TableCell align="center">{phone}</TableCell>
+                    <TableCell align="center">
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={onDeleteClick}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>

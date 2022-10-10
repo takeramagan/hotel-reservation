@@ -1,20 +1,17 @@
-import React, { useCallback } from "react";
-import { Box, Button, Paper, Typography } from "@mui/material";
+import React, { useCallback, useContext } from "react";
+import { Box, Button, Paper } from "@mui/material";
 import { useFormik } from "formik";
 import InputField from "./InputField";
+import { FilterContext } from "../context/Context";
+import { filterInitData } from "../constants/constants";
 
-const SearchCriteria = ({ onSearchSubmit }) => {
+const SearchCriteria = () => {
+  const [filter, setFilter] = useContext(FilterContext);
   const formik = useFormik({
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      arrivalDate: "",
-      departureDate: "",
-    },
+    initialValues: filterInitData,
     onSubmit: (values) => {
-      onSearchSubmit(values);
+      // onSearchSubmit(values);
+      setFilter(values);
     },
   });
 
@@ -48,7 +45,7 @@ const SearchCriteria = ({ onSearchSubmit }) => {
           <InputField
             id="email"
             label="Email"
-            type="email"
+            type="text"
             value={formik.values.email}
             onChange={formik.handleChange}
           />

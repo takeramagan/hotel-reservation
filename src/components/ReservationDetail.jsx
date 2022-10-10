@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Button,
@@ -12,13 +12,19 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import * as yup from "yup";
 import { pink } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import InputField from "./InputField";
-import { extraService, roomOptions, tagOptions } from "../constants/constants";
+import {
+  extraService,
+  roomOptions,
+  tagOptions,
+  validationSchema,
+  initialFormValues,
+} from "../constants/constants";
 import { useFormik } from "formik";
 import moment from "moment";
+import { ReservationContext } from "../context/Context";
 
 const PaymentRadio = <Radio sx={{ "&.Mui-checked": { color: pink[400] } }} />;
 
@@ -38,81 +44,9 @@ const switchContainerStyle = {
   alignItems: "center",
 };
 
-const validationSchema = yup.object({
-  firstName: yup
-    .string("Enter your first Name")
-    .min(3, "Min 3 length")
-    .max(25, "Max 25 length")
-    .matches(/^[a-zA-Z]+(([a-zA-Z ])?[a-zA-Z]*)*$/, "Invalid name")
-    .required("Required"),
-  lastName: yup
-    .string("Enter your last Name")
-    .min(3, "Min 3 length")
-    .max(50, "Max 50 length")
-    .matches(/^[a-zA-Z]+(([a-zA-Z ])?[a-zA-Z]*)*$/, "Invalid name")
-    .required("Required"),
-  email: yup
-    .string("Enter your email")
-    .max(64, "Max 64 length")
-    .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, "Invalid email")
-    .required("Email is required"),
-  stay: yup.object({
-    arrivalDate: yup.string().required("Required"),
-    departureDate: yup.string().required("Required"),
-  }),
-  room: yup.object({
-    roomSize: yup.string().required("Required"),
-    roomQuantity: yup
-      .number()
-      .min(1, "Min 1")
-      .max(5, "max 5")
-      .required("Required"),
-  }),
-  phone: yup
-    .string()
-    .matches(/^[1-9]\d{10,13}$/, "Invalid")
-    .required("Required"),
-  addressStreet: yup.object({
-    streetName: yup.string().required("Required"),
-  }),
-  addressLocation: yup.object({
-    zipCode: yup
-      .string()
-      .required("Required")
-      .matches(
-        /^\d{5}-\d{4}|\d{5}|[a-zA-Z]\d[a-zA-Z] \d[a-zA-Z]\d|[a-zA-Z]\d[a-zA-Z]\d[a-zA-Z]\d$/,
-        "Invalid"
-      ),
-    state: yup.string().required("Required"),
-    city: yup.string().required("Required"),
-  }),
-});
-
-const initialValues = {
-  room: { roomSize: "business-suite" },
-  extras: [],
-  tags: [],
-  stay: {
-    arrivalDate: "",
-    departureDate: "",
-  },
-  addressStreet: {
-    streetName: "",
-    streetNumber: "",
-  },
-  addressLocation: {
-    zipCode: "",
-    state: "",
-    city: "",
-  },
-  payment: "cc",
-  reminder: true,
-  newsletter: true,
-  confirm: true,
-};
-
 const ReservationDetail = ({ onClose, reservation }) => {
   const isEditing = !!reservation?.email; //normally use key property
+  const [reservations, setReservations] = useContext(ReservationContext);
   const formik = useFormik({
     initialValues: isEditing
       ? {
@@ -127,10 +61,16 @@ const ReservationDetail = ({ onClose, reservation }) => {
             ),
           },
         }
-      : initialValues,
+      : initialFormValues,
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
+      isEditing
+        ? setReservations(
+            reservations.map((v) => (v.email !== values.email ? v : values)) //should use key here
+          )
+        : setReservations([...reservations, values]);
+      onClose();
     },
   });
 
@@ -218,7 +158,8 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 value={formik.values.firstName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                formik={formik}
+                error={formik.touched.firstName && !!formik.errors.firstName}
+                helperText={formik.touched.firstName && formik.errors.firstName}
               />
             </Box>
             <Box sx={{ my: 1 }}>
@@ -231,7 +172,8 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 value={formik.values.lastName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                formik={formik}
+                error={formik.touched.lastName && !!formik.errors.lastName}
+                helperText={formik.touched.lastName && formik.errors.lastName}
               />
             </Box>
             <Box sx={{ my: 1 }}>
@@ -242,7 +184,8 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                formik={formik}
+                error={formik.touched.email && !!formik.errors.email}
+                helperText={formik.touched.email && formik.errors.email}
               />
             </Box>
             <Box sx={{ my: 1 }}>
@@ -254,7 +197,8 @@ const ReservationDetail = ({ onClose, reservation }) => {
                 value={formik.values.phone}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                formik={formik}
+                error={formik.touched.phone && !!formik.errors.phone}
+                helperText={formik.touched.phone && formik.errors.phone}
               />
             </Box>
             <Box sx={{ my: 1 }}>

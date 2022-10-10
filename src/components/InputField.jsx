@@ -65,8 +65,6 @@ const InputField = ({
           size="small"
           type={type}
           id={id}
-          error={formik?.touched[id] && !!formik?.errors[id]}
-          helperText={formik?.touched[id] && formik?.errors[id]}
           {...restProps}
         />
       )}
