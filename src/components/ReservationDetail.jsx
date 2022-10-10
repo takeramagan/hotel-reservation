@@ -410,7 +410,7 @@ const ReservationDetail = ({ onClose, reservation }) => {
                   Close
                 </Button>
                 <Button variant="contained" type="submit">
-                  Add
+                  Save
                 </Button>
               </Box>
             </Box>
@@ -425,7 +425,9 @@ const ReservationDetail = ({ onClose, reservation }) => {
           <DialogTitle>{"Confirm delete?"}</DialogTitle>
           <DialogActions>
             <Button onClick={onDelDialogClose}>Cancel</Button>
-            <Button onClick={onConfirmDelete}>Confirm</Button>
+            <Button onClick={onConfirmDelete} variant="contained" color="error">
+              Confirm
+            </Button>
           </DialogActions>
         </Dialog>
       </Box>
