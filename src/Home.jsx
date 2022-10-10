@@ -14,7 +14,7 @@ const filterData = (v, filters) =>
   v.stay.departureDate.includes(filters.departureDate);
 
 const Home = () => {
-  const [reservationData, setReservationData] = useContext(ReservationContext); // data list
+  const [reservationData] = useContext(ReservationContext); // data list
   const [filter, setFilter] = useContext(FilterContext); // data list
   const [filteredData, setFilteredData] = useState(reservationData); // searched data
   const [curReservation, setCurReservation] = useState(null); //null: close Modal, {}: empty object, Add new reservation, {email:...} : not empty object, edit reservation
