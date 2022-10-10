@@ -25,6 +25,7 @@ import {
 import { useFormik } from "formik";
 import moment from "moment";
 import { ReservationContext } from "../context/Context";
+import reservationStore from "../store/reservationStore";
 
 const PaymentRadio = <Radio sx={{ "&.Mui-checked": { color: pink[400] } }} />;
 
@@ -45,8 +46,8 @@ const switchContainerStyle = {
 };
 
 const ReservationDetail = ({ onClose, reservation }) => {
-  const isEditing = !!reservation?.email; //normally use key property
-  const [reservations, setReservations] = useContext(ReservationContext);
+  const isEditing = !!reservation?.key; //normally use key property
+  // const [reservations, setReservations] = useContext(ReservationContext);
   const formik = useFormik({
     initialValues: isEditing
       ? {
@@ -65,11 +66,7 @@ const ReservationDetail = ({ onClose, reservation }) => {
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
-      isEditing
-        ? setReservations(
-            reservations.map((v) => (v.email !== values.email ? v : values)) //should use key here
-          )
-        : setReservations([...reservations, values]);
+      isEditing ? reservationStore.edit(values) : reservationStore.add(values);
       onClose();
     },
   });
@@ -371,10 +368,29 @@ const ReservationDetail = ({ onClose, reservation }) => {
               />
               <Typography>I confirm the information given above</Typography>
             </Box>
-            <Button onClick={onClose}>Close Child Modal</Button>
-            <Button variant="standard" type="submit">
-              Add
-            </Button>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box>
+                {isEditing && (
+                  <Button variant="contained" color="error">
+                    Delete
+                  </Button>
+                )}
+              </Box>
+              <Box>
+                <Button onClick={onClose} variant="stardard">
+                  Close
+                </Button>
+                <Button variant="contained" type="submit">
+                  Add
+                </Button>
+              </Box>
+            </Box>
           </form>
         </Paper>
       </Box>

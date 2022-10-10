@@ -134,10 +134,11 @@ const Home = () => {
                   email,
                   phone,
                   stay: { arrivalDate, departureDate },
+                  key,
                 } = row;
                 return (
                   <TableRow
-                    key={`${firstName}-${lastName}`}
+                    key={`key-${key}`}
                     onDoubleClick={() => {
                       onEdit(row);
                     }}
