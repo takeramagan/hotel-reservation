@@ -68,7 +68,6 @@ const ReservationDetail = ({ onClose, reservation }) => {
       : initialFormValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       isEditing ? reservationStore.edit(values) : reservationStore.add(values);
       onClose();
     },
@@ -84,7 +83,6 @@ const ReservationDetail = ({ onClose, reservation }) => {
 
   //Delete reservation
   const onConfirmDelete = useCallback(() => {
-    console.log("confirm delete");
     reservationStore.delete(reservation);
     setShowDel(false);
     onClose();

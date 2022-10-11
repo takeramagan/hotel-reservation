@@ -19,7 +19,7 @@ DefaultInput.args = {
   id: "text",
   type: "text",
   error: false,
-  helperText: "required field",
+  helperText: "",
 };
 
 export const Select = Template.bind({});
