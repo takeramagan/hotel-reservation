@@ -1,5 +1,5 @@
 import React from "react";
-import ReservationTable from "./ReservationTable";
+import { ReservationTable } from "./ReservationTable";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 const dataToDisplay = [

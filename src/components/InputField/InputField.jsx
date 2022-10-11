@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const InputField = ({
+export const InputField = ({
   label,
   labelAlign = "left",
   bottomLabel,
@@ -75,5 +75,3 @@ const InputField = ({
     </Box>
   );
 };
-
-export default InputField;

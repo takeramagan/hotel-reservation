@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
 import { Box, Button, Paper } from "@mui/material";
 import { useFormik } from "formik";
-import InputField from "./InputField";
-import { filterInitData } from "../constants/constants";
+import { InputField } from "../InputField";
+import { filterInitData } from "../../constants/constants";
 
-const SearchCriteria = ({ setFilter }) => {
+export const SearchCriteria = ({ setFilter }) => {
   const formik = useFormik({
     initialValues: filterInitData,
     onSubmit: (values) => {
@@ -78,5 +78,3 @@ const SearchCriteria = ({ setFilter }) => {
     </Paper>
   );
 };
-
-export default SearchCriteria;

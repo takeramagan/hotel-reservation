@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import ReservationDetail from "./ReservationDetail";
-import reservations from "../reservations.json";
+import { ReservationDetail } from "./ReservationDetail";
+import reservations from "../../reservations.json";
 
 describe("reservationDetail", () => {
   it("Add new", () => {

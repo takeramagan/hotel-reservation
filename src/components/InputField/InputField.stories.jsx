@@ -1,6 +1,6 @@
 import React from "react";
-import InputField from "./InputField";
-import { roomOptions, tagOptions } from "../constants/constants";
+import { InputField } from "./InputField";
+import { roomOptions, tagOptions } from "../../constants/constants";
 
 export default {
   title: "InputField",

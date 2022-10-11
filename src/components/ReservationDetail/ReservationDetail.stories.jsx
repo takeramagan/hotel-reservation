@@ -1,6 +1,6 @@
 import React from "react";
-import ReservationDetail from "./ReservationDetail";
-import reservations from "../reservations.json";
+import { ReservationDetail } from "./ReservationDetail";
+import reservations from "../../reservations.json";
 
 export default {
   title: "ReservationDetail",

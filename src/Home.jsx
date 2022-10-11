@@ -1,9 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { FilterContext, ReservationContext } from "./context/Context";
-import ReservationDetail from "./components/ReservationDetail";
-import SearchCriteria from "./components/SearchCriteria";
-import ReservationTable from "./components/ReservationTable";
+import {
+  ReservationDetail,
+  ReservationTable,
+  SearchCriteria,
+} from "./components";
 
 const filterData = (v, filters) =>
   v.firstName.toLowerCase().includes(filters.firstName.toLowerCase()) &&

@@ -10,7 +10,7 @@ import {
   TableHead,
 } from "@mui/material";
 
-const ReservationTable = ({ filteredData, onEdit }) => {
+export const ReservationTable = ({ filteredData, onEdit }) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 1080 }}>
@@ -72,5 +72,3 @@ const ReservationTable = ({ filteredData, onEdit }) => {
     </TableContainer>
   );
 };
-
-export default ReservationTable;

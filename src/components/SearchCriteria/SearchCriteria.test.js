@@ -1,5 +1,5 @@
 import React from "react";
-import SearchCriteria from "./SearchCriteria";
+import { SearchCriteria } from "./SearchCriteria";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 describe("search bar rendered", () => {

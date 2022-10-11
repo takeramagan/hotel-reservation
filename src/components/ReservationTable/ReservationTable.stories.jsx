@@ -1,6 +1,6 @@
 import React from "react";
-import ReservationTable from "./ReservationTable";
-import reservations from "../reservations.json";
+import { ReservationTable } from "./ReservationTable";
+import reservations from "../../reservations.json";
 
 export default {
   title: "ReservationTable",

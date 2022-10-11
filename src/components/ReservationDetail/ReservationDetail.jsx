@@ -17,17 +17,17 @@ import {
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
-import InputField from "./InputField";
+import { InputField } from "../InputField";
 import {
   extraService,
   roomOptions,
   tagOptions,
   validationSchema,
   initialFormValues,
-} from "../constants/constants";
+} from "../../constants/constants";
 import { useFormik } from "formik";
 import moment from "moment";
-import reservationStore from "../store/reservationStore";
+import reservationStore from "../../store/reservationStore";
 
 const PaymentRadio = <Radio sx={{ "&.Mui-checked": { color: pink[400] } }} />;
 
@@ -47,7 +47,7 @@ const switchContainerStyle = {
   alignItems: "center",
 };
 
-const ReservationDetail = ({ onClose, reservation }) => {
+export const ReservationDetail = ({ onClose, reservation }) => {
   const isEditing = !!reservation?.key;
   const [showDel, setShowDel] = useState(false); //show Alert dialog when delete clicked
 
@@ -432,5 +432,3 @@ const ReservationDetail = ({ onClose, reservation }) => {
     </Modal>
   );
 };
-
-export default ReservationDetail;

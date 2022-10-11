@@ -1,5 +1,5 @@
 import React from "react";
-import SearchCriteria from "./SearchCriteria";
+import { SearchCriteria } from "./SearchCriteria";
 
 export default {
   title: "SearchCriteria",
