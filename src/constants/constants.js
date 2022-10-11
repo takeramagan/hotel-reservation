@@ -1,3 +1,4 @@
+import moment from "moment";
 import * as yup from "yup";
 
 const roomOptions = [
@@ -46,7 +47,20 @@ const validationSchema = yup.object({
     .required("Email is required"),
   stay: yup.object({
     arrivalDate: yup.string().required("Required"),
-    departureDate: yup.string().required("Required"),
+    departureDate: yup
+      .string()
+      .required("Required")
+      .test(
+        "not earlier than arrival",
+        "earlier than arrival date",
+        function match(v) {
+          const ref = yup.ref("arrivalDate");
+          const bf = moment(this.resolve(ref));
+          const af = moment(v);
+          if (!bf.isValid) return true;
+          return af.isSameOrAfter(bf);
+        }
+      ),
   }),
   room: yup.object({
     roomSize: yup.string().required("Required"),
@@ -58,7 +72,7 @@ const validationSchema = yup.object({
   }),
   phone: yup
     .string()
-    .matches(/^[1-9]\d{10,13}$/, "Invalid")
+    .matches(/^[1-9]\d{10,13}$/, "11-14 digits")
     .required("Required"),
   addressStreet: yup.object({
     streetName: yup.string().required("Required"),
@@ -78,6 +92,10 @@ const validationSchema = yup.object({
 
 const initialFormValues = {
   room: { roomSize: "business-suite", roomQuantity: 1 },
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
   extras: [],
   tags: [],
   stay: {
