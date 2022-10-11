@@ -7,6 +7,10 @@ export default {
   argTypes: {},
 };
 
-const Template = () => <SearchCriteria />;
+const Template = (args) => <SearchCriteria {...args} />;
 
 export const SearchBar = Template.bind({});
+
+SearchBar.args = {
+  setFilter: () => {},
+};

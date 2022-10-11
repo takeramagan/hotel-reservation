@@ -7,7 +7,7 @@ describe("reservationDetail", () => {
     render(<ReservationDetail onClose={() => {}} reservation={{}} />);
     expect(screen.getByText("Add reservation")).toBeInTheDocument();
   });
-  it("Edit", () => {
+  it("Edit", async () => {
     const handleClick = jest.fn();
     render(
       <ReservationDetail
@@ -17,22 +17,31 @@ describe("reservationDetail", () => {
     );
     expect(screen.getByText("Edit reservation")).toBeInTheDocument();
     fireEvent.click(screen.getByText(/close/i));
+    await waitFor(() => {
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
     fireEvent.click(screen.getByText(/save/i));
-    expect(handleClick).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(handleClick).toHaveBeenCalledTimes(2);
+    });
   });
 
   it("Edit delete", async () => {
+    const onClose = jest.fn();
     render(
       <ReservationDetail
-        onClose={() => {}}
+        onClose={onClose}
         reservation={{ ...reservations[0], key: 1 }}
       />
     );
     expect(screen.getByText("Edit reservation")).toBeInTheDocument();
     fireEvent.click(screen.getAllByText(/Delete/i)[0]);
-    await waitFor(() => screen.findByText(/confirm delete/i));
-    expect(screen.getByText(/confirm delete/i)).toBeInTheDocument();
-    fireEvent.click(screen.getByText(/confirm delete/i));
-    // expect()
+    await waitFor(() => {
+      expect(screen.getByText("Confirm")).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText("Confirm"));
+    await waitFor(() => {
+      expect(onClose).toBeCalled();
+    });
   });
 });
